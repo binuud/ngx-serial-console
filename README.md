@@ -32,6 +32,7 @@ and import the library
 import { NgxSerialConsole } from 'ngx-serial-console';
 ```
 
+Add following, in your component html file, to display the serial console component
 ```
 <ngx-serial-console></ngx-serial-console>
 ```
