@@ -1,59 +1,38 @@
 # NgxSerialConsole
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
+This is an angular library, to create a component that would connect to a serial port and display the data from the port.
 
-## Development server
+On all chromium base browsers, eg: Google Chrome, Edge, Opera etc, we have the ability to connect to a serial port.
+This library, uses the facility to connect to a serial port and watch the serial output.
 
-To start a local development server, run:
+This uses zoneless, and signals to watch for events and trigger updates.
 
-```bash
-ng serve
+The browser requires the user to trigger an event to connect to a serial port, this is a security feature of the browser.
+We cannot auto connect to serial ports.
+The user has to click on a button "connect" on the component, the browser triggers a model with safe to connect serial/usb ports.
+The user has to select one of the ports.
+
+The purpose of this component is to watch output from different embedded devices or development boards like Arduino, Esp32, Esp8266.
+Various baud rates are supported. Please select the appropriate baud rate in the component.
+
+## Usage
+
+```
+npm install --save ngx-serial-console
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+Import the component in your app.ts or corresponding typescript file
+```
+imports: [RouterOutlet],
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+and import the library
 
-```bash
-ng generate --help
+```
+import { NgxSerialConsole } from 'ngx-serial-console';
 ```
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Upcoming features
+* Provide a service for same
+* Support user input on serial device
+* Provide components without bootstrap css

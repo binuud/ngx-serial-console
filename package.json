@@ -29,6 +29,7 @@
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
     "ng": "^0.0.0",
+    "ngx-serial-console": "file:dist/ngx-serial-console",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
