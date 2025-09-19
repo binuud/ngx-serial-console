@@ -1,0 +1,52 @@
+@if (state().serialAvailable) {
+    <div class="card console-window" [class]="state().theme">
+        
+            <div class="input-group input-group-sm mb-3">
+                <span class="input-group-text">
+                    Serial Monitor
+                    @if (state().connected) {
+                        <i class="fa-solid fa-link px-2"></i>
+                    } @else {
+                        <i class="fa-solid fa-link-slash px-2"></i>
+                    }
+                </span>
+                @if (state().connected) {
+                    <button id="serialConnectButton" class="btn btn-outline-secondary" (click)="disconnectSerialPort()">Disconnect</button>
+                } @else {
+                    <button id="serialConnectButton" class="btn btn-outline-secondary" (click)="connectSerialPort()">Connect</button>
+                }
+                
+                <span class="input-group-text ps-4">Theme</span>
+                <select class="form-select" id="themeStyleSelect" name="themeStyle" [(ngModel)]="state().theme">
+                    @for (rate of themeStyles; track rate) {
+                        <option [value]="rate">{{ rate }}</option>
+                    }
+                </select>
+
+                <span class="input-group-text ps-4">Baud Rate</span>
+                <select class="form-select" id="baudRateSelect" name="baudRate" [(ngModel)]="state().baudRate">
+                    @for (rate of baudRates; track rate) {
+                        <option [value]="rate">{{ rate }}</option>
+                    }
+                </select>
+                <button class="btn btn-outline-secondary"  (click)="clear()" ngbTooltip="Clear History">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+
+        
+        <div class="card-body" #scrollSerialContainer>
+            <pre class="serial-out-text">{{ consoleOutput() }}</pre>
+        </div>
+
+    </div>
+} @else {
+    <div class="alert alert-info" role="alert">
+        <i class="fa-solid fa-triangle-exclamation"></i> Your browser does not support serial port access.<br/>
+        This feature is only available on chromium based browsers.<br/>
+        Please use one the below browsers to access this feature.<br/>
+        eg: Google Chrome, Opera, Edge<br/>
+        <a href="https://caniuse.com/?search=usb" target="_blank">Browser support</a>
+    </div>
+}
+
