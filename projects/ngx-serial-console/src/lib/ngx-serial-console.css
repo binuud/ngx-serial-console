@@ -21,6 +21,7 @@
 
 .serial-out-text {
     font-size: 1.1rem;
+    color: whitesmoke;
     white-space: pre-wrap; /* preserve new lines */
 }
 
@@ -45,3 +46,4 @@
       0 0 5px #444444,
       0 0 10px #666666;
 }
+

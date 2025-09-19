@@ -13,7 +13,7 @@ interface SerialMonitorState {
 }
 
 @Component({
-  selector: 'lib-ngx-serial-console',
+  selector: 'ngx-serial-console',
   imports: [FormsModule],
   templateUrl: './ngx-serial-console.html',
   styleUrl: './ngx-serial-console.css'
