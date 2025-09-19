@@ -32,6 +32,10 @@ and import the library
 import { NgxSerialConsole } from 'ngx-serial-console';
 ```
 
+```
+<ngx-serial-console></ngx-serial-console>
+```
+
 ## Upcoming features
 * Provide a service for same
 * Support user input on serial device
