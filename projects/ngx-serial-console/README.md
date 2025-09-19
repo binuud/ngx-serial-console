@@ -1,63 +1,38 @@
 # NgxSerialConsole
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.0.
+This is an angular library, to create a component that would connect to a serial port and display the data from the port.
 
-## Code scaffolding
+On all chromium base browsers, eg: Google Chrome, Edge, Opera etc, we have the ability to connect to a serial port.
+This library, uses the facility to connect to a serial port and watch the serial output.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This uses zoneless, and signals to watch for events and trigger updates.
 
-```bash
-ng generate component component-name
+The browser requires the user to trigger an event to connect to a serial port, this is a security feature of the browser.
+We cannot auto connect to serial ports.
+The user has to click on a button "connect" on the component, the browser triggers a model with safe to connect serial/usb ports.
+The user has to select one of the ports.
+
+The purpose of this component is to watch output from different embedded devices or development boards like Arduino, Esp32, Esp8266.
+Various baud rates are supported. Please select the appropriate baud rate in the component.
+
+## Usage
+
+```
+npm install --save ngx-serial-console
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+Import the component in your app.ts or corresponding typescript file
+```
+imports: [RouterOutlet],
 ```
 
-## Building
+and import the library
 
-To build the library, run:
-
-```bash
-ng build ngx-serial-console
+```
+import { NgxSerialConsole } from 'ngx-serial-console';
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
-
-### Publishing the Library
-
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-   ```bash
-   cd dist/ngx-serial-console
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+Add following, in your component html file, to display the serial console component
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+<ngx-serial-console></ngx-serial-console>
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
