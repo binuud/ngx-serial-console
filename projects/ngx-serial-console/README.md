@@ -15,6 +15,8 @@ The user has to select one of the ports.
 The purpose of this component is to watch output from different embedded devices or development boards like Arduino, Esp32, Esp8266.
 Various baud rates are supported. Please select the appropriate baud rate in the component.
 
+![Alt text](ngx-console-window.gif?raw=true "Sample Gif Capture")
+
 ## Usage
 
 ```
@@ -36,3 +38,8 @@ Add following, in your component html file, to display the serial console compon
 ```
 <ngx-serial-console></ngx-serial-console>
 ```
+
+## Upcoming features
+* Provide a service for same
+* Support user input on serial device
+* Provide components without bootstrap css
