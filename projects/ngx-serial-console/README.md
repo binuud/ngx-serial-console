@@ -15,13 +15,23 @@ The user has to select one of the ports.
 The purpose of this component is to watch output from different embedded devices or development boards like Arduino, Esp32, Esp8266.
 Various baud rates are supported. Please select the appropriate baud rate in the component.
 
-![Alt text](ngx-console-window.gif?raw=true "Sample Gif Capture")
+![Alt text](https://github.com/binuud/ngx-serial-console/blob/master/projects/ngx-serial-console/ngx-console-window.gif?raw=true "Sample Gif Capture")
 
-## Usage
+## Live Demo
+
+[Click here for live demo](https://binuud.com/staging/demo/serial-console).
+
+[Blog entry here](https://binuud.com/blogs/serialconsole/).
+
+Note: The serial port feature works only on chromium based browsers like Google Chrome, Edge, Opera etc.
+
+## Install
 
 ```
 npm install --save ngx-serial-console
 ```
+
+## Usage
 
 Import the component in your app.ts or corresponding typescript file
 ```

@@ -1,6 +1,6 @@
 {
   "name": "ngx-serial-console",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "peerDependencies": {
     "@angular/common": "^20.3.0",
     "@angular/core": "^20.3.0"
@@ -8,5 +8,31 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binuud/ngx-serial-console"
+  },
+  "homepage": "https://binuud.com/blogs/serialconsole/",
+  "keywords": [
+        "angular",
+        "angualr v20+",
+        "javascript",
+        "esp32",
+        "arduino",
+        "serial",
+        "usb",
+        "serial console",
+        "zoneless"
+      ],
+  "author": {
+    "name": "binuud",
+    "email": "binu@dronasys.com",
+    "url": "http://binuud.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/binuud/ngx-serial-console/issues",
+    "email": "binu@dronasys.com"
+  },
+  "license": "MIT"
 }
