@@ -21,7 +21,9 @@ Various baud rates are supported. Please select the appropriate baud rate in the
 
 [Click here for live demo](https://binuud.com/staging/demo/serial-console).
 
-[Blog entry here](https://binuud.com/blogs/serialconsole/).
+[Project description here](https://binuud.com/project/serialconsole/).
+
+[NPM repository](https://www.npmjs.com/package/ngx-serial-console).
 
 Note: The serial port feature works only on chromium based browsers like Google Chrome, Edge, Opera etc.
 
