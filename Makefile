@@ -11,4 +11,7 @@ test: ## run angular tests, if you are running within docker, container must con
 	ng test ngx-serial-console
 
 run: ## runs the angular demo project
-	ng serve	
+	ng serve
+	
+publish: ## publish image to npm
+#	npm publish   	
