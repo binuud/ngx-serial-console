@@ -35,10 +35,12 @@ npm install --save ngx-serial-console
 
 Import the component in your app.ts or corresponding typescript file
 ```
-imports: [RouterOutlet],
+@Component({
+    import { NgxSerialConsole } from 'ngx-serial-console';
 ```
 
-and import the library
+
+and import the library in app.ts or correspondint typescript file
 
 ```
 import { NgxSerialConsole } from 'ngx-serial-console';
