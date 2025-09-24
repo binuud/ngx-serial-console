@@ -218,7 +218,7 @@ export class NgxSerialConsole {
   }
 
   async disconnectSerialPort() {
-    console.log("Triggering disconnectSerialPort");
+    // console.log("Triggering disconnectSerialPort");
     this._send("__disconnect");
     //this.connState.keepConnectionAlive = false;
     this._send("__disconnected");
