@@ -1,6 +1,6 @@
 {
   "name": "ngx-serial-console",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "peerDependencies": {
     "@angular/core": "^20.0.0"
   },
