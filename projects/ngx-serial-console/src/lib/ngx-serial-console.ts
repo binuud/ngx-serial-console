@@ -175,9 +175,9 @@ export class NgxSerialConsole {
     } catch(err) {}
 
     try {
-      console.log("Serial writer closing (unsetConnection)");
+      // console.log("Serial writer closing (unsetConnection)");
       await this.connState.writer?.close();
-      console.log("Serial writer closed (unsetConnection)");
+      // console.log("Serial writer closed (unsetConnection)");
 
     } catch(err) { }
 
@@ -185,13 +185,13 @@ export class NgxSerialConsole {
     await this.connState.writableStreamClosed.catch(() => { /* Ignore errors here */ });
 
     try {
-      console.log("Closing serial port (unsetConnection)");
+      // console.log("Closing serial port (unsetConnection)");
 
       await this.connState.port.close();
-      console.log("Serial port closed (unsetConnection)");
+      // console.log("Serial port closed (unsetConnection)");
     } catch(err) {}
 
-    console.log("Serial port closed (unsetConnection)");
+    // console.log("Serial port closed (unsetConnection)");
 
     this.state.update(state => ({
       ...state,
@@ -212,7 +212,7 @@ export class NgxSerialConsole {
       writableStreamClosed: undefined,
       keepConnectionAlive: false,
     }
-    console.log("ConnState unset (unsetConnection)");
+    // console.log("ConnState unset (unsetConnection)");
     this.appendOutput('\nDisconnected from serial port\n');
 
   }
