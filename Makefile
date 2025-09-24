@@ -17,4 +17,4 @@ run: ## runs the angular demo project
 	ng serve
 	
 publish: ## publish image to npm
-#	npm publish   	
+#	cd dist/ngx-serial-console/  && npm publish   	

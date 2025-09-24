@@ -25,7 +25,10 @@ The user has to select one of the ports.
 The purpose of this component is to watch output from different embedded devices or development boards like Arduino, Esp32, Esp8266.
 Various baud rates are supported. Please select the appropriate baud rate in the component.
 
-![Alt text](https://github.com/binuud/ngx-serial-console/blob/master/projects/ngx-serial-console/ngx-console-window.gif?raw=true "Sample Gif Capture")
+Users can send string messages to the device via serial port. If writer is enabled, you would be able to send string messages from the input box at the bottom
+of the screen.
+
+![Alt text](https://github.com/binuud/ngx-serial-console/blob/master/ngx-console-window.gif?raw=true "Sample Gif Capture")
 
 
 
