@@ -16,5 +16,5 @@ run-lib: ## run the lib watching for changes
 run: ## runs the angular demo project
 	ng serve
 	
-publish: ## publish image to npm
+publish: ## publish to npm - cd dist/ngx-serial-console/  && npm publish   	
 #	cd dist/ngx-serial-console/  && npm publish   	
