@@ -3,13 +3,27 @@ import { FormsModule } from '@angular/forms';
 
 interface SerialMonitorState {
   serialAvailable: boolean;
-  connected: boolean;
   maxLines: number;
   outputLines: string[];
   baudRate: number;
   vendorId: string | undefined;
   productId: string | undefined;
   theme: "CRT" | "Plain";
+  prevInputs: string[];
+  currentInput: string;
+}
+
+// should not be shared across components or services
+interface SerialConnectionState {
+  connected: boolean;
+  port: any;
+  textDecoder: TextDecoderStream | null;
+  textEncoder: TextEncoderStream | null;
+  readableStreamClosed: any;
+  writableStreamClosed: any;
+  reader: ReadableStreamDefaultReader<string> | null;
+  writer: WritableStreamDefaultWriter<string> | null; 
+  keepConnectionAlive: boolean;
 }
 
 @Component({
@@ -35,11 +49,25 @@ export class NgxSerialConsole {
     connected: false,
     maxLines: 500,
     outputLines: [],
+    prevInputs: [],
+    currentInput: "",
     baudRate: 115200,
     vendorId: "",
     productId: "",
     theme: "Plain"
-  });  
+  }); 
+  
+  connState: SerialConnectionState = {
+    connected: false,
+    port: undefined,
+    reader: null,
+    writer: null,
+    textDecoder: null,
+    textEncoder: null,
+    readableStreamClosed: undefined,
+    writableStreamClosed: undefined,
+    keepConnectionAlive: false,
+  }
   
   // computed signal, which listens on state changes, and updates the consoleOutput
   consoleOutput: Signal<string> = computed(() => this.state().outputLines.join(''));
@@ -51,7 +79,6 @@ export class NgxSerialConsole {
 
   isUserScrolling = false; // triggered when user scrolls using mouse or touch
   autoScrollEnabled: boolean = true; // when user scrolls to any other position, auto scroll is disabled
-  keepConnectionAlive: boolean = true;
 
   constructor() {
 
@@ -96,6 +123,28 @@ export class NgxSerialConsole {
 
   }
 
+  // send the input to serial
+  async send() {
+    this._send(this.state().currentInput);
+  }
+
+  private async _send(text: string) {
+    if (this.connState.writer) {
+      // console.log("Can write to serial, sending ", this.state().currentInput);
+      await this.connState.writer.write(text);
+      this.state.update(state => {
+        const updatedInputs = [...state.prevInputs, text];
+        return {
+          ...state,
+          prevInputs: updatedInputs,
+          currentInput: ""
+        };
+      });
+    } else {
+      // console.log("Serial port not writable");
+    }
+  }
+
   // clear the output of the console window
   clear() {
     this.state.update(state => ({
@@ -104,7 +153,46 @@ export class NgxSerialConsole {
     }));
   }
 
-  unsetConnection() {
+  clearInput() {
+    this.state.update(state => ({
+      ...state,
+      currentInput: ""
+    }));
+  }
+
+  // binu - do not change flow
+  // close the reader
+  // close the writer
+  // close the port
+  // unset the states
+  async unsetConnection() {
+
+    // console.log("Closing all serial connections (unsetConnection)");
+    // close the reader, write and cleanup states
+    // do not ever combine the exception try catches below...
+    try {
+      await this.connState.reader?.cancel();
+    } catch(err) {}
+
+    try {
+      // console.log("Serial writer closing (unsetConnection)");
+      await this.connState.writer?.close();
+      // console.log("Serial writer closed (unsetConnection)");
+
+    } catch(err) { }
+
+    await this.connState.readableStreamClosed.catch(() => { /* Ignore the error */ });
+    await this.connState.writableStreamClosed.catch(() => { /* Ignore errors here */ });
+
+    try {
+      // console.log("Closing serial port (unsetConnection)");
+
+      await this.connState.port.close();
+      // console.log("Serial port closed (unsetConnection)");
+    } catch(err) {}
+
+    // console.log("Serial port closed (unsetConnection)");
+
     this.state.update(state => ({
       ...state,
       connected: false,
@@ -112,11 +200,29 @@ export class NgxSerialConsole {
       productId: "",
     }));
 
+    // unset all connection states
+    this.connState = {
+      connected: false,
+      port: undefined,
+      reader: null,
+      writer: null,
+      textDecoder: null,
+      textEncoder: null,
+      readableStreamClosed: undefined,
+      writableStreamClosed: undefined,
+      keepConnectionAlive: false,
+    }
+    // console.log("ConnState unset (unsetConnection)");
     this.appendOutput('\nDisconnected from serial port\n');
+
   }
 
   async disconnectSerialPort() {
-    this.keepConnectionAlive = false;
+    // console.log("Triggering disconnectSerialPort");
+    this._send("__disconnect");
+    //this.connState.keepConnectionAlive = false;
+    this._send("__disconnected");
+    this.unsetConnection();
   }
 
   // initiate the serial connection
@@ -157,10 +263,23 @@ export class NgxSerialConsole {
         if (port) {
           this.state.update(state => ({
             ...state,
-            connected: true,
             vendorId: port.getInfo().vendorId,
             productId: port.getInfo().productId,
           }));
+          this.connState.connected = true;
+
+          this.appendOutput(`Connected serial port with baud rate ${this.state().baudRate}\n`);   
+          // Set up a text decoder stream to read from the serial port.
+          this.connState.port = port;
+          this.connState.textDecoder = new TextDecoderStream();
+          this.connState.readableStreamClosed = port.readable.pipeTo(this.connState.textDecoder.writable);
+          this.connState.reader = this.connState.textDecoder.readable.getReader();
+
+          this.connState.textEncoder = new TextEncoderStream();
+
+          this.connState.writableStreamClosed = this.connState.textEncoder.readable.pipeTo(port.writable);
+          this.connState.writer = this.connState.textEncoder.writable.getWriter();
+
           this.readSerialPort(port);
         }
       }
@@ -180,42 +299,26 @@ export class NgxSerialConsole {
   // or the serial device disconnects
   // handle disconnections gracefully
   async  readSerialPort(port: any) {
-    this.appendOutput(`Connected serial port with baud rate ${this.state().baudRate}\n`);   
-    // Set up a text decoder stream to read from the serial port.
-    const textDecoder = new TextDecoderStream();
-    let readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
-    let reader = textDecoder.readable.getReader();
     
     this.appendOutput('Connected and reading data:\n');
 
     // if we want to stop the read loop, set this var to false, in other functions
-    this.keepConnectionAlive = true;
+    this.connState.keepConnectionAlive = true;
     
     // we are using zoneless, 
     // #TODO binu, revisit why PendingTasks is not needed here
-    while (this.keepConnectionAlive) {
-      const { value, done } = await reader.read();
+    while (this.connState.keepConnectionAlive && this.connState.reader) {
+      const { value, done } = await this.connState.reader.read();
       if (done) {
-        // console.log("Serial Reader closed");
-        reader.releaseLock();
-        this.keepConnectionAlive = false;
+        console.log("Serial Reader closed");
+        this.connState.reader.releaseLock();
+        this.connState.keepConnectionAlive = false;
         break;
       }
       if (value) {
         this.appendOutput(value);
       }
     }
-
-    const textEncoder = new TextEncoderStream();
-    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-    let writer = textEncoder.writable.getWriter();
-
-    // close the reader, write and cleanup states
-    reader.cancel();
-    await readableStreamClosed.catch(() => { /* Ignore the error */ });
-    writer.close();
-    await writableStreamClosed;
-    await port.close();
   
     this.unsetConnection();
 

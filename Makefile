@@ -10,6 +10,9 @@ build: ## build all libraries in this project
 test: ## run angular tests, if you are running within docker, container must container chromium headless
 	ng test ngx-serial-console
 
+run-lib: ## run the lib watching for changes
+	ng build ngx-serial-console --watch
+
 run: ## runs the angular demo project
 	ng serve
 	
