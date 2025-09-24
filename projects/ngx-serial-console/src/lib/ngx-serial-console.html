@@ -1,44 +1,56 @@
 @if (state().serialAvailable) {
     <div class="card console-window" [class]="state().theme">
         
-            <div class="input-group input-group-sm mb-3">
-                <span class="input-group-text">
-                    Serial Monitor
-                    @if (state().connected) {
-                        <i class="fa-solid fa-link px-2"></i>
-                    } @else {
-                        <i class="fa-solid fa-link-slash px-2"></i>
-                    }
-                </span>
-                @if (state().connected) {
-                    <button id="serialConnectButton" class="btn btn-outline-secondary" (click)="disconnectSerialPort()">Disconnect</button>
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text">
+                Serial Monitor
+                @if (connState.connected) {
+                    <i class="fa-solid fa-link px-2"></i>
                 } @else {
-                    <button id="serialConnectButton" class="btn btn-outline-secondary" (click)="connectSerialPort()">Connect</button>
+                    <i class="fa-solid fa-link-slash px-2"></i>
                 }
-                
-                <span class="input-group-text ps-4">Theme</span>
-                <select class="form-select" id="themeStyleSelect" name="themeStyle" [(ngModel)]="state().theme">
-                    @for (rate of themeStyles; track rate) {
-                        <option [value]="rate">{{ rate }}</option>
-                    }
-                </select>
-
-                <span class="input-group-text ps-4">Baud Rate</span>
-                <select class="form-select" id="baudRateSelect" name="baudRate" [(ngModel)]="state().baudRate">
-                    @for (rate of baudRates; track rate) {
-                        <option [value]="rate">{{ rate }}</option>
-                    }
-                </select>
-                <button class="btn btn-outline-secondary"  (click)="clear()" tooltip="Clear History">
-                    Clear
-                </button>
-            </div>
-
-        
-        <div class="card-body" #scrollSerialContainer>
-            <pre class="serial-out-text">{{ consoleOutput() }}</pre>
+            </span>
+            @if (connState.connected) {
+                <button id="serialDisConnectButton" class="btn btn-outline-secondary" (click)="disconnectSerialPort()">Disconnect</button>
+            } @else {
+                <button id="serialConnectButton" class="btn btn-outline-secondary" (click)="connectSerialPort()">Connect</button>
+            }
+            
+            <span class="input-group-text ps-4">Theme</span>
+            <select class="form-select" id="themeStyleSelect" name="themeStyle" [(ngModel)]="state().theme">
+                @for (rate of themeStyles; track rate) {
+                    <option [value]="rate">{{ rate }}</option>
+                }
+            </select>
+ 
+            <span class="input-group-text ps-4">Baud Rate</span>
+            <select class="form-select" id="baudRateSelect" name="baudRate" [(ngModel)]="state().baudRate">
+                @for (rate of baudRates; track rate) {
+                    <option [value]="rate">{{ rate }}</option>
+                }
+            </select>
+            <button class="btn btn-outline-secondary"  (click)="clear()" tooltip="Clear History">
+                Clear
+            </button>
         </div>
 
+        
+        <div class="card-body serial-out" #scrollSerialContainer>
+            <pre class="serial-out-text">{{ consoleOutput() }}</pre>
+        </div>
+ 
+        <div class="input-group input-group-sm mt-3">
+            <input [(ngModel)]="state().currentInput" (keyup.enter)="send()" [disabled]="!this.connState.writer"
+            type="text" class="form-control" placeholder="Send Text Message" aria-label="Serial Input">
+            <button class="btn btn-outline-secondary" (click)="clearInput()" tooltip="Clear Input">
+                Clear
+            </button>
+            <button class="btn btn-outline-secondary" (click)="send()" tooltip="Send Input">
+                Send
+            </button>
+        </div>
+
+        
     </div>
 } @else {
     <div class="alert alert-info" role="alert">

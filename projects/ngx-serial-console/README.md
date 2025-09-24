@@ -2,6 +2,16 @@
 
 This is an angular library, to create a component that would connect to a serial port and display the data from the port.
 
+## Live Demo
+
+[Click here for live demo](https://binuud.com/staging/demo/serial-console).
+
+[Project description here](https://binuud.com/project/serialconsole/).
+
+[NPM repository](https://www.npmjs.com/package/ngx-serial-console).
+
+## Description
+
 On all chromium base browsers, eg: Google Chrome, Edge, Opera etc, we have the ability to connect to a serial port.
 This library, uses the facility to connect to a serial port and watch the serial output.
 
@@ -17,13 +27,7 @@ Various baud rates are supported. Please select the appropriate baud rate in the
 
 ![Alt text](https://github.com/binuud/ngx-serial-console/blob/master/projects/ngx-serial-console/ngx-console-window.gif?raw=true "Sample Gif Capture")
 
-## Live Demo
 
-[Click here for live demo](https://binuud.com/staging/demo/serial-console).
-
-[Project description here](https://binuud.com/project/serialconsole/).
-
-[NPM repository](https://www.npmjs.com/package/ngx-serial-console).
 
 Note: The serial port feature works only on chromium based browsers like Google Chrome, Edge, Opera etc.
 
@@ -33,12 +37,17 @@ Note: The serial port feature works only on chromium based browsers like Google 
 npm install --save ngx-serial-console
 ```
 
+if you see version conflicts (angular 20+ is needed)
+```
+npm install --save ngx-serial-console --force
+```
+
 ## Usage
 
 Import the component in your app.ts or corresponding typescript file
 ```
 @Component({
-    import { NgxSerialConsole } from 'ngx-serial-console';
+  imports: [ NgxSerialConsole],
 ```
 
 
@@ -55,5 +64,5 @@ Add following, in your component html file, to display the serial console compon
 
 ## Upcoming features
 * Provide a service for same
-* Support user input on serial device
+* Support user input on serial device -- done on version 0.0.7
 * Provide components without bootstrap css
