@@ -38,7 +38,7 @@ endif
 
 run: ## runs the angular demo project
 ifeq ($(ENABLE_DOCKER),true)
-	docker stop $(BUILD_CONTAINER); docker rm $(BUILD_CONTAINER);docker run --rm  --name $(BUILD_CONTAINER) -v "$(shell pwd)/:/app" $(REPO)/$(ANGULAR_CLI_DEV) ng serve
+	docker stop $(BUILD_CONTAINER); docker rm $(BUILD_CONTAINER);docker run --rm  --name $(BUILD_CONTAINER)  -p "4200:4200"  -v "$(shell pwd)/:/app" $(REPO)/$(ANGULAR_CLI_DEV) ng serve  --host 0.0.0.0
 else
 	ng serve
 endif
